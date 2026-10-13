@@ -8,6 +8,11 @@ Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::post('/commandes', [PublicController::class, 'order'])
     ->middleware('throttle:10,1')
     ->name('orders.store');
+Route::get('/paiement', [PublicController::class, 'paymentProofForm'])
+    ->name('orders.payment');
+Route::post('/paiement/preuve', [PublicController::class, 'submitPaymentProof'])
+    ->middleware('throttle:5,1')
+    ->name('orders.payment.submit');
 Route::get('/commande/{reference}', [PublicController::class, 'confirmation'])
     ->name('orders.confirmation');
 Route::post('/commande/{reference}/preuve-paiement', [PublicController::class, 'uploadPaymentProof'])
@@ -44,4 +49,6 @@ Route::middleware(['auth', 'admin'])
             ->name('scanner');
         Route::post('/scanner/valider', [AdminController::class, 'scan'])
             ->name('scanner.validate');
+        Route::post('/scanner/marquer', [AdminController::class, 'markAsUsed'])
+            ->name('scanner.mark-used');
     });

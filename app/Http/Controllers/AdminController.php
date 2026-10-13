@@ -143,14 +143,15 @@ class AdminController extends Controller
     public function scan(Request $request)
     {
         $data = $request->validate([
-            'token' => 'required|string|max:200',
+            'token' => 'required_without:ticket_number|nullable|string|max:200',
+            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^CH-\d{6}-\d{2}$/i'],
         ]);
-        $token = $this->normalizeScannedToken($data['token']);
+        $token = isset($data['token'])
+            ? $this->normalizeScannedToken($data['token'])
+            : '';
 
-        $result = DB::transaction(function () use ($token, $request) {
-            $ticket = Ticket::where('token_hash', hash('sha256', $token))
-                ->lockForUpdate()
-                ->first();
+        $result = DB::transaction(function () use ($data, $token) {
+            $ticket = $this->findScannedTicket($data, $token);
 
             if (! $ticket) {
                 return [
@@ -158,7 +159,7 @@ class AdminController extends Controller
                     'exists' => false,
                     'scanned_in_app' => false,
                     'status' => 'unknown',
-                    'message' => 'Aucun billet ne correspond à ce code.',
+                    'message' => 'Aucun billet ne correspond à ce QR code ou à ce numéro.',
                 ];
             }
 
@@ -184,8 +185,71 @@ class AdminController extends Controller
                     'status' => 'used',
                     'used_at' => $ticket->used_at?->format('d/m/Y à H:i'),
                     'message' => $scannedInApp
-                        ? 'Entrée déjà enregistrée. Accès refusé.'
-                        : 'Billet déjà marqué comme utilisé. Accès refusé.',
+                        ? 'Billet valide, mais déjà marqué comme scanné dans l’application.'
+                        : 'Billet valide, déjà déclaré utilisé hors application.',
+                ];
+            }
+
+            return [
+                'ok' => true,
+                'exists' => true,
+                'scanned_in_app' => false,
+                'status' => 'valid',
+                'ticket_number' => $ticket->ticket_number,
+                'message' => 'Billet existant et valide. Pas encore scanné dans cette application. Numéro : '.$ticket->ticket_number.'.',
+            ];
+        });
+
+        return response()->json($result, $result['ok'] ? 200 : 422);
+    }
+
+    public function markAsUsed(Request $request)
+    {
+        $data = $request->validate([
+            'token' => 'required_without:ticket_number|nullable|string|max:200',
+            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^CH-\d{6}-\d{2}$/i'],
+        ]);
+        $token = isset($data['token'])
+            ? $this->normalizeScannedToken($data['token'])
+            : '';
+
+        $result = DB::transaction(function () use ($data, $token, $request) {
+            $ticket = $this->findScannedTicket($data, $token);
+
+            if (! $ticket) {
+                return [
+                    'ok' => false,
+                    'exists' => false,
+                    'scanned_in_app' => false,
+                    'status' => 'unknown',
+                    'message' => 'Aucun billet ne correspond à ce QR code ou à ce numéro.',
+                ];
+            }
+
+            $order = Order::find($ticket->order_id);
+
+            if ($order->status !== 'paid') {
+                return [
+                    'ok' => false,
+                    'exists' => true,
+                    'scanned_in_app' => false,
+                    'status' => 'payment_pending',
+                    'message' => 'Paiement non confirmé. Entrée refusée.',
+                ];
+            }
+
+            if ($ticket->status === 'used') {
+                $scannedInApp = $ticket->scanned_by !== null;
+
+                return [
+                    'ok' => false,
+                    'exists' => true,
+                    'scanned_in_app' => $scannedInApp,
+                    'status' => 'used',
+                    'used_at' => $ticket->used_at?->format('d/m/Y à H:i'),
+                    'message' => $scannedInApp
+                        ? 'Billet valide, mais déjà marqué comme scanné dans l’application.'
+                        : 'Billet valide, déjà déclaré utilisé hors application.',
                 ];
             }
 
@@ -199,15 +263,27 @@ class AdminController extends Controller
                 'ok' => true,
                 'exists' => true,
                 'scanned_in_app' => true,
-                'status' => 'used',
+                'status' => 'marked',
+                'ticket_number' => $ticket->ticket_number,
                 'used_at' => $ticket->used_at?->format('d/m/Y à H:i'),
-                'message' => 'Entrée autorisée. '.$ticket->ticket_number,
+                'message' => 'Billet marqué comme déjà scanné. Entrée enregistrée.',
             ];
         });
 
         return response()->json($result, $result['ok'] ? 200 : 422);
     }
+    private function findScannedTicket(array $data, string $token): ?Ticket
+    {
+        $query = Ticket::query();
 
+        if (! empty($data['ticket_number'])) {
+            $query->where('ticket_number', strtoupper($data['ticket_number']));
+        } else {
+            $query->where('token_hash', hash('sha256', $token));
+        }
+
+        return $query->lockForUpdate()->first();
+    }
     private function normalizeScannedToken(string $value): string
     {
         $value = trim($value);

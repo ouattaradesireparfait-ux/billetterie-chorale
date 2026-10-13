@@ -16,7 +16,7 @@ class PublicController extends Controller
         return view('public.home');
     }
 
-    public function order(Request $request, OrderService $orderService)
+    public function order(Request $request)
     {
         $data = $request->validate([
             'buyer_name' => 'required|string|max:120',
@@ -27,9 +27,88 @@ class PublicController extends Controller
             'payment_method' => 'required|in:orange_money,wave,momo,moov_money',
         ]);
 
-        $order = $orderService->create($data);
+        $request->session()->put('pending_order_draft', $data);
 
-        return redirect()->route('orders.confirmation', $order->reference);
+        return redirect()->route('orders.payment');
+    }
+
+    public function paymentProofForm(Request $request)
+    {
+        $draft = $request->session()->get('pending_order_draft');
+
+        if (! is_array($draft)) {
+            return redirect()
+                ->route('home')
+                ->withErrors([
+                    'payment_proof' => 'Votre réservation a expiré. Veuillez remplir le formulaire à nouveau.',
+                ]);
+        }
+
+        $ticketType = config("ticketing.ticket_types.{$draft['ticket_type']}");
+        $totalAmount = $ticketType['price'] * $draft['quantity'];
+        $totalFormatted = number_format($totalAmount, 0, ',', ' ');
+
+        $paymentMethodLabel = match ($draft['payment_method']) {
+            'orange_money' => 'Orange Money',
+            'wave' => 'Wave',
+            'momo' => 'Momo',
+            'moov_money' => 'Moov Money',
+        };
+
+        return view('public.payment-proof', compact(
+            'draft',
+            'ticketType',
+            'totalAmount',
+            'totalFormatted',
+            'paymentMethodLabel',
+        ));
+    }
+
+    public function submitPaymentProof(Request $request, OrderService $orderService)
+    {
+        $draft = $request->session()->get('pending_order_draft');
+
+        if (! is_array($draft)) {
+            return redirect()
+                ->route('home')
+                ->withErrors([
+                    'payment_proof' => 'Votre réservation a expiré. Veuillez remplir le formulaire à nouveau.',
+                ]);
+        }
+
+        $data = $request->validate([
+            'payment_proof' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ], [
+            'payment_proof.required' => 'Ajoutez la capture d’écran de votre paiement.',
+            'payment_proof.image' => 'Le fichier doit être une image.',
+            'payment_proof.mimes' => 'Formats acceptés : JPG, PNG ou WebP.',
+            'payment_proof.max' => 'La capture ne doit pas dépasser 5 Mo.',
+        ]);
+
+        $path = $data['payment_proof']->store('payment-proofs', 'local');
+
+        if (! $path) {
+            return back()->withErrors([
+                'payment_proof' => 'La capture n’a pas pu être enregistrée. Réessayez.',
+            ]);
+        }
+
+        try {
+            $order = $orderService->create(array_merge($draft, [
+                'payment_proof_path' => $path,
+                'payment_proof_uploaded_at' => now(),
+            ]));
+        } catch (\Throwable $exception) {
+            Storage::disk('local')->delete($path);
+
+            throw $exception;
+        }
+
+        $request->session()->forget('pending_order_draft');
+
+        return redirect()
+            ->route('orders.confirmation', $order->reference)
+            ->with('success', 'Capture reçue. Votre commande est enregistrée et en attente de vérification.');
     }
 
     public function confirmation(string $reference)

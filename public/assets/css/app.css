@@ -841,6 +841,216 @@ td form + form {
     }
 }
 
+/* Palette inspirée de l’affiche : bordeaux, ivoire et or. */
+:root {
+    --color-bordeaux: #74101b;
+    --color-bordeaux-dark: #4d0710;
+    --color-bordeaux-light: #8e1b25;
+    --color-or: #c99a2e;
+    --color-or-clair: #e8c65f;
+    --color-ivoire: #fbf4e6;
+    --color-ivoire-fonce: #f2e3bf;
+    --color-papier: #fffdf7;
+    --color-encre: #3d1b1b;
+    --color-texte-secondaire: #70594d;
+}
+
+body {
+    background: var(--color-ivoire);
+    color: var(--color-encre);
+}
+
+body > header,
+body > footer {
+    background: linear-gradient(
+        120deg,
+        var(--color-bordeaux-dark),
+        var(--color-bordeaux)
+    );
+}
+
+body > footer {
+    color: var(--color-or-clair);
+}
+
+.site-header__brand,
+.site-header__nav a {
+    color: var(--color-or-clair);
+}
+
+.site-header__nav a:hover,
+.site-header__nav a:focus-visible {
+    color: var(--color-papier);
+}
+
+.hero {
+    border: 1px solid var(--color-or);
+    background: linear-gradient(
+        135deg,
+        var(--color-papier),
+        var(--color-ivoire-fonce)
+    );
+    color: var(--color-bordeaux-dark);
+}
+
+.hero h1,
+.hero small {
+    color: var(--color-bordeaux);
+}
+
+.hero p {
+    color: var(--color-texte-secondaire);
+}
+
+.art {
+    border-color: var(--color-or);
+    background: var(--color-bordeaux-dark);
+    box-shadow: 0 0 0 7px rgb(201 154 46 / 18%);
+}
+
+.prices article,
+.card,
+.ticket,
+.admin-summary__item {
+    border-color: #dfc98e;
+    background: var(--color-papier);
+}
+
+.prices b,
+.payment-number,
+.concert-ticket__eyebrow,
+.admin-summary__item strong {
+    color: var(--color-bordeaux);
+}
+
+input,
+select {
+    border-color: #c9ad68;
+    background: var(--color-papier);
+    color: var(--color-encre);
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible,
+a:focus-visible {
+    outline-color: var(--color-or);
+}
+
+button,
+.button {
+    background: var(--color-bordeaux);
+    color: var(--color-papier);
+}
+
+button:hover,
+.button:hover {
+    background: var(--color-bordeaux-dark);
+}
+
+.gold,
+button.gold,
+.button.gold {
+    background: linear-gradient(
+        135deg,
+        var(--color-or-clair),
+        var(--color-or)
+    );
+    color: var(--color-bordeaux-dark);
+}
+
+.gold:hover,
+button.gold:hover,
+.button.gold:hover {
+    background: var(--color-or-clair);
+    color: var(--color-bordeaux-dark);
+}
+
+.payment-instructions {
+    border-left-color: var(--color-or);
+    background: #f5e9ca;
+}
+
+.payment-instructions h3,
+.concert-ticket__title,
+.concert-ticket__details strong {
+    color: var(--color-bordeaux-dark);
+}
+
+.admin-summary__item span,
+.concert-ticket__details span,
+.concert-ticket__qr {
+    color: var(--color-texte-secondaire);
+}
+
+.table {
+    border-color: #dfc98e;
+    background: var(--color-papier);
+}
+
+th {
+    background: var(--color-bordeaux);
+    color: var(--color-or-clair);
+}
+
+td,
+.table td {
+    border-bottom-color: #eee3c8;
+}
+
+.concert-ticket {
+    border-color: var(--color-or);
+    background: var(--color-papier);
+}
+
+.concert-ticket__header,
+.concert-ticket__footer {
+    background: var(--color-bordeaux-dark);
+    color: var(--color-or-clair);
+}
+
+.concert-ticket__header {
+    border-bottom-color: var(--color-or);
+}
+
+.concert-ticket__brand strong {
+    color: var(--color-papier);
+}
+
+.concert-ticket__content {
+    background: var(--color-ivoire);
+}
+
+.concert-ticket__date {
+    color: #79500e;
+}
+
+.concert-ticket__date span,
+.concert-ticket__perforation {
+    border-color: var(--color-or);
+}
+
+.concert-ticket__date span {
+    color: var(--color-or);
+}
+
+.concert-ticket__venue {
+    color: var(--color-texte-secondaire);
+}
+
+.concert-ticket__qr img {
+    border-color: #dfc98e;
+    background: var(--color-papier);
+}
+
+main a:not(.button) {
+    color: var(--color-bordeaux);
+}
+
+main a:not(.button):hover {
+    color: var(--color-bordeaux-dark);
+}
+
 @media print {
     body {
         background: #fff;
@@ -873,4 +1083,479 @@ td form + form {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
+}
+
+/* Présentation du billet recto-verso, inspirée du modèle doré fourni. */
+.ticket-page {
+    width: min(100%, 1040px);
+    text-align: left;
+}
+
+.ticket-document {
+    display: grid;
+    gap: 24px;
+}
+
+.ticket-face {
+    position: relative;
+    overflow: hidden;
+    border: 2px solid var(--color-or);
+    border-radius: 18px;
+    background: var(--color-papier);
+    box-shadow: 0 16px 38px rgb(61 27 27 / 12%);
+    color: var(--color-encre);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.ticket-face--front {
+    display: grid;
+    min-height: 330px;
+    grid-template-columns: minmax(0, 1fr) 225px;
+    background:
+        radial-gradient(ellipse at 5% 5%, rgb(232 198 95 / 28%), transparent 33%),
+        linear-gradient(115deg, var(--color-papier), var(--color-ivoire));
+}
+
+.ticket-front__main {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(20px, 4vw, 38px);
+}
+
+.ticket-front__logos {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.ticket-front__logo {
+    display: block;
+    width: clamp(48px, 8vw, 72px);
+    height: clamp(48px, 8vw, 72px);
+    flex: 0 0 auto;
+    border: 2px solid var(--color-or);
+    border-radius: 50%;
+    background: var(--color-papier);
+    object-fit: contain;
+}
+
+.ticket-front__brand {
+    display: grid;
+    min-width: 0;
+    color: var(--color-bordeaux-dark);
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.05;
+    text-align: center;
+}
+
+.ticket-front__brand span {
+    font-size: clamp(10px, 1.8vw, 15px);
+    letter-spacing: 0.18em;
+}
+
+.ticket-front__brand strong {
+    color: var(--color-bordeaux);
+    font-size: clamp(14px, 2.8vw, 24px);
+    letter-spacing: 0.04em;
+}
+
+.ticket-front__event {
+    padding: 18px 0;
+    text-align: center;
+}
+
+.ticket-front__access {
+    display: inline-block;
+    margin: 0 0 12px;
+    padding: 8px 15px;
+    border: 1px solid var(--color-or);
+    border-radius: 999px;
+    background: var(--color-bordeaux);
+    color: var(--color-or-clair);
+    font-size: clamp(11px, 2vw, 15px);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+.ticket-front__event h1 {
+    margin: 0;
+    color: var(--color-bordeaux-dark);
+    font: 600 clamp(1.6rem, 4vw, 2.7rem)/1.12 Georgia, 'Times New Roman', serif;
+}
+
+.ticket-front__subtitle {
+    margin: 10px 0 0;
+    color: var(--color-texte-secondaire);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(14px, 2vw, 19px);
+    font-style: italic;
+}
+
+.ticket-front__signature {
+    margin: 0;
+    color: var(--color-bordeaux);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 14px;
+    font-style: italic;
+    text-align: center;
+}
+
+.ticket-front__stub {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 14px;
+    border-left: 2px dashed var(--color-or);
+    background: linear-gradient(160deg, #f5e9ca, var(--color-ivoire-fonce));
+    text-align: center;
+}
+
+.ticket-front__number-label {
+    color: var(--color-texte-secondaire);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.ticket-front__number {
+    margin: 5px 0 12px;
+    color: var(--color-bordeaux-dark);
+    font-size: clamp(13px, 1.5vw, 17px);
+    overflow-wrap: anywhere;
+}
+
+.ticket-front__qr {
+    display: block;
+    width: clamp(132px, 18vw, 168px);
+    height: auto;
+    aspect-ratio: 1;
+    padding: 7px;
+    border: 1px solid #dfc98e;
+    background: var(--color-papier);
+    image-rendering: pixelated;
+}
+
+.ticket-front__qr-hint {
+    max-width: 180px;
+    margin-top: 8px;
+    color: var(--color-bordeaux-dark);
+    font-size: 10px;
+    line-height: 1.35;
+}
+
+.ticket-face--back {
+    background:
+        radial-gradient(ellipse at 100% 100%, rgb(232 198 95 / 20%), transparent 35%),
+        var(--color-papier);
+}
+
+.ticket-back__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px clamp(18px, 4vw, 34px);
+    background: linear-gradient(110deg, var(--color-bordeaux-dark), var(--color-bordeaux));
+    color: var(--color-or-clair);
+}
+
+.ticket-back__header span {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+}
+
+.ticket-back__header h2 {
+    margin: 4px 0 0;
+    color: var(--color-papier);
+    font: 500 clamp(1.35rem, 3vw, 1.8rem)/1.2 Georgia, 'Times New Roman', serif;
+}
+
+.ticket-back__header > strong {
+    max-width: 42%;
+    color: var(--color-or-clair);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 13px;
+    text-align: right;
+}
+
+.ticket-back__body {
+    padding: clamp(18px, 4vw, 32px);
+}
+
+.ticket-back__event-grid,
+.ticket-back__holder-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.ticket-back__event-grid {
+    grid-template-columns: 1fr 0.7fr 1.5fr;
+}
+
+.ticket-back__holder-grid {
+    grid-template-columns: 1.3fr 1fr 1fr;
+    margin-top: 14px;
+}
+
+.ticket-back__event-grid > div,
+.ticket-back__holder-grid > div {
+    display: grid;
+    min-width: 0;
+    gap: 5px;
+    padding: 13px 14px;
+    border: 1px solid #dfc98e;
+    border-radius: 9px;
+    background: rgb(251 244 230 / 78%);
+}
+
+.ticket-back__event-grid span,
+.ticket-back__holder-grid span {
+    color: var(--color-texte-secondaire);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.ticket-back__event-grid strong,
+.ticket-back__holder-grid strong {
+    color: var(--color-bordeaux-dark);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.ticket-face--back .ticket-status {
+    margin-top: 14px;
+}
+
+.ticket-back__instructions {
+    margin: 14px 0 0;
+    padding: 12px 14px;
+    border-left: 4px solid var(--color-or);
+    border-radius: 6px;
+    background: #f5e9ca;
+    color: var(--color-bordeaux-dark);
+    font-size: 13px;
+}
+
+.ticket-back__footer {
+    padding: 11px 18px;
+    background: var(--color-bordeaux-dark);
+    color: var(--color-or-clair);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+
+@media (max-width: 680px) {
+    .ticket-face--front {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ticket-front__main {
+        min-height: 280px;
+        padding: 20px 16px;
+    }
+
+    .ticket-front__stub {
+        border-top: 2px dashed var(--color-or);
+        border-left: 0;
+    }
+
+    .ticket-back__header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .ticket-back__header > strong {
+        max-width: none;
+        text-align: left;
+    }
+
+    .ticket-back__event-grid,
+    .ticket-back__holder-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@page {
+    size: A4 landscape;
+    margin: 12mm;
+}
+
+@media print {
+    .ticket-page {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    .ticket-document {
+        display: block;
+    }
+
+    .ticket-face {
+        width: 100%;
+        min-height: 155mm;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .ticket-face--front {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 65mm;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .ticket-face--back {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .ticket-front__main,
+    .ticket-back__body {
+        padding: 14mm;
+    }
+
+    .ticket-front__logo {
+        width: 22mm;
+        height: 22mm;
+    }
+
+    .ticket-front__qr {
+        width: 42mm;
+    }
+
+    .ticket-front__event h1 {
+        font-size: 25pt;
+    }
+
+    .ticket-front__access {
+        font-size: 12pt;
+    }
+
+    .ticket-back__event-grid strong,
+    .ticket-back__holder-grid strong {
+        font-size: 12pt;
+    }
+}
+
+/* Contrôle d’entrée simplifié : aperçu immédiat et retour visuel par statut. */
+.scanner-card {
+    text-align: center;
+}
+
+.scanner-card h1,
+.scanner-card > p:first-of-type {
+    text-align: left;
+}
+
+#reader {
+    width: min(100%, 560px);
+    margin: 18px auto;
+    overflow: hidden;
+    border: 2px solid var(--color-or);
+    border-radius: 14px;
+    background: #170b0c;
+}
+
+#reader video {
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.scan-result {
+    min-height: 46px;
+    margin: 14px 0 0;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.scan-result--ready {
+    border-color: #dfc98e;
+    background: var(--color-ivoire);
+    color: var(--color-bordeaux-dark);
+}
+
+.scan-result--checking {
+    border-color: #dfc98e;
+    background: #f5e9ca;
+    color: #62430f;
+}
+
+.scan-result--valid,
+.scan-result--marked {
+    border-color: #b7d9bf;
+    background: #e5f3e8;
+    color: #165b2b;
+}
+
+.scan-result--already-used {
+    border-color: #e3b64d;
+    background: #fff0c2;
+    color: #805000;
+}
+
+.scan-result--invalid,
+.scan-result--error {
+    border-color: #e4b8b4;
+    background: #fae8e6;
+    color: #8c2424;
+}
+
+#mark-used {
+    width: min(100%, 420px);
+    margin: 14px auto 0;
+    font-weight: 800;
+}
+
+#mark-used:disabled {
+    background: #b7ada4;
+    color: #fffdf7;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+    #reader {
+        margin: 14px auto;
+    }
+
+    #mark-used {
+        width: 100%;
+    }
+}
+.scanner-manual {
+    width: min(100%, 560px);
+    margin: 14px auto;
+    text-align: left;
+}
+
+.scanner-manual label {
+    display: grid;
+    gap: 8px;
+    font-weight: 600;
+}
+
+#ticket-number {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #c7b47a;
+    border-radius: 10px;
+    font: inherit;
+    letter-spacing: .05em;
+    text-transform: uppercase;
 }

@@ -8,18 +8,42 @@ use Illuminate\Support\Str;
 
 class OrderService
 {
-    public function create(array $d, bool $paid = false): Order
+    public function create(array $data, bool $paid = false): Order
     {
-        return DB::transaction(function () use ($d, $paid) {
-            $type = $d['ticket_type'];
-            $price = config("ticketing.ticket_types.$type.price");
-            $o = Order::create(['reference' => 'CMD-'.now()->format('ymd').'-'.Str::upper(Str::random(16)), 'buyer_name' => $d['buyer_name'], 'buyer_email' => $d['buyer_email'] ?? null, 'buyer_phone' => $d['buyer_phone'], 'ticket_type' => $type, 'quantity' => (int) $d['quantity'], 'unit_price' => $price, 'total_amount' => $price * (int) $d['quantity'], 'payment_method' => $d['payment_method'], 'payment_reference' => $d['payment_reference'] ?? null, 'status' => $paid ? 'paid' : 'pending', 'paid_at' => $paid ? now() : null]);
-            for ($i = 1; $i <= $o->quantity; $i++) {
+        return DB::transaction(function () use ($data, $paid) {
+            $ticketType = $data['ticket_type'];
+            $unitPrice = config("ticketing.ticket_types.{$ticketType}.price");
+            $quantity = (int) $data['quantity'];
+
+            $order = Order::create([
+                'reference' => 'CMD-'.now()->format('ymd').'-'.Str::upper(Str::random(16)),
+                'buyer_name' => $data['buyer_name'],
+                'buyer_email' => $data['buyer_email'] ?? null,
+                'buyer_phone' => $data['buyer_phone'],
+                'ticket_type' => $ticketType,
+                'quantity' => $quantity,
+                'unit_price' => $unitPrice,
+                'total_amount' => $unitPrice * $quantity,
+                'payment_method' => $data['payment_method'],
+                'payment_reference' => $data['payment_reference'] ?? null,
+                'payment_proof_path' => $data['payment_proof_path'] ?? null,
+                'payment_proof_uploaded_at' => $data['payment_proof_uploaded_at'] ?? null,
+                'status' => $paid ? 'paid' : 'pending',
+                'paid_at' => $paid ? now() : null,
+            ]);
+
+            for ($index = 1; $index <= $order->quantity; $index++) {
                 $token = Str::random(48);
-                $o->tickets()->create(['ticket_number' => sprintf('CH-%06d-%02d', $o->id, $i), 'token_hash' => hash('sha256', $token), 'token' => $token, 'status' => 'valid']);
+
+                $order->tickets()->create([
+                    'ticket_number' => sprintf('CH-%06d-%02d', $order->id, $index),
+                    'token_hash' => hash('sha256', $token),
+                    'token' => $token,
+                    'status' => 'valid',
+                ]);
             }
 
-return $o->load('tickets');
+            return $order->load('tickets');
         });
     }
 }
