@@ -1671,3 +1671,71 @@ main a:not(.button):hover {
         width: 100%;
     }
 }
+.scan-dialog {
+    width: min(calc(100% - 32px), 520px);
+    max-width: none;
+    padding: 0;
+    border: 1px solid var(--color-or);
+    border-radius: 22px;
+    background: var(--color-papier);
+    color: var(--color-encre);
+    box-shadow: 0 24px 80px rgb(0 0 0 / 38%);
+}
+
+.scan-dialog::backdrop {
+    background: rgb(28 7 10 / 74%);
+    backdrop-filter: blur(4px);
+}
+
+.scan-dialog__content {
+    padding: clamp(22px, 5vw, 34px);
+}
+
+.scan-dialog h2 {
+    margin: 6px 0 16px;
+    color: var(--color-bordeaux-dark);
+    font-family: Georgia, serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+}
+
+.scan-dialog .scan-result {
+    display: flex;
+    min-height: 90px;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 18px;
+    line-height: 1.55;
+}
+
+.scan-dialog .scanner-actions {
+    width: 100%;
+    margin: 18px 0 0;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+}
+
+.scan-dialog .scanner-actions--single {
+    grid-template-columns: 1fr;
+}
+
+.scan-dialog #mark-used,
+.scan-dialog #new-scan {
+    width: 100%;
+    min-height: 50px;
+    margin: 0;
+}
+
+.scan-dialog #mark-used[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 480px) {
+    .scan-dialog {
+        width: calc(100% - 24px);
+        border-radius: 18px;
+    }
+
+    .scan-dialog .scanner-actions {
+        grid-template-columns: 1fr;
+    }
+}
