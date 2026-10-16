@@ -1471,8 +1471,11 @@ main a:not(.button):hover {
 }
 
 #reader video {
+    display: block;
+    max-width: 100% !important;
+    height: auto;
     border-radius: 12px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .scan-result {

@@ -138,9 +138,8 @@
 
             const cameraConfig = {
                 fps: 10,
-                aspectRatio: 1,
                 qrbox: (width, height) => {
-                    const size = Math.min(width, height, 280);
+                    const size = Math.floor(Math.min(Math.min(width, height) * 0.78, 320));
 
                     return { width: size, height: size };
                 },
