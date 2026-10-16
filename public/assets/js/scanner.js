@@ -257,8 +257,8 @@
         const number = ticketNumberInput.value.trim().toUpperCase();
         ticketNumberInput.value = number;
 
-        if (!/^CH-[0-9]{6}-[0-9]{2}$/.test(number)) {
-            ticketNumberInput.setCustomValidity('Saisissez uniquement un numéro au format CH-000001-01.');
+        if (!/^(?:VIP|STD)-[0-9]{4,}$/.test(number)) {
+            ticketNumberInput.setCustomValidity('Saisissez un numéro au format VIP-0001 ou STD-0001.');
             ticketNumberInput.reportValidity();
             return;
         }

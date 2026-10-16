@@ -22,11 +22,10 @@
                     type="text"
                     inputmode="text"
                     autocapitalize="characters"
-                    maxlength="12"
-                    minlength="12"
-                    pattern="CH-[0-9]{6}-[0-9]{2}"
-                    placeholder="CH-000001-01"
-                    title="Format attendu : CH-000001-01"
+                    maxlength="32"
+                    pattern="(?:VIP|STD)-[0-9]{4,}"
+                    placeholder="VIP-0001 ou STD-0001"
+                    title="Format attendu : VIP-0001 ou STD-0001"
                     spellcheck="false"
                     required
                 >
@@ -34,7 +33,7 @@
                     Vérifier
                 </button>
             </div>
-            <small>Format accepté : CH-000001-01</small>
+            <small>Format accepté : VIP-0001 ou STD-0001.</small>
         </form>
     </section>
 

@@ -144,7 +144,7 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'token' => 'required_without:ticket_number|nullable|string|max:200',
-            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^CH-\d{6}-\d{2}$/i'],
+            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^(?:VIP|STD)-\d{4,}$/i'],
         ]);
         $token = isset($data['token'])
             ? $this->normalizeScannedToken($data['token'])
@@ -207,7 +207,7 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'token' => 'required_without:ticket_number|nullable|string|max:200',
-            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^CH-\d{6}-\d{2}$/i'],
+            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^(?:VIP|STD)-\d{4,}$/i'],
         ]);
         $token = isset($data['token'])
             ? $this->normalizeScannedToken($data['token'])
@@ -277,7 +277,7 @@ class AdminController extends Controller
         $query = Ticket::query();
 
         if (! empty($data['ticket_number'])) {
-            $query->where('ticket_number', strtoupper($data['ticket_number']));
+            $query->where('ticket_number', strtoupper(trim($data['ticket_number'])));
         } else {
             $query->where('token_hash', hash('sha256', $token));
         }
