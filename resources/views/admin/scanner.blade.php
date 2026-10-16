@@ -2,17 +2,20 @@
 
 @section('content')
     <section class="card scanner-card">
-        <h1>Contrôle d’entrée</h1>
-        <p>
-            Le scan vérifie le billet sans le modifier. Appuyez sur le bouton après vérification
-            pour enregistrer l’entrée.
-        </p>
+        <div class="scanner-heading">
+            <span class="scanner-eyebrow">Contrôle des billets</span>
+            <h1>Scanner les billets</h1>
+            <p>
+                Scannez le QR code avec la caméra arrière, ou saisissez le numéro du billet.
+                La vérification ne marque pas le billet comme utilisé.
+            </p>
+        </div>
 
-        <div id="reader" aria-label="Scanner QR avec la caméra arrière"></div>
+        <div id="reader" aria-label="Lecteur de QR code utilisant la caméra arrière"></div>
 
         <form id="manual-ticket" class="scanner-manual" autocomplete="off">
-            <label for="ticket-number">
-                Ou saisir le numéro du billet
+            <label for="ticket-number">Saisie alternative</label>
+            <div class="scanner-manual__controls">
                 <input
                     id="ticket-number"
                     name="ticket_number"
@@ -27,17 +30,25 @@
                     spellcheck="false"
                     required
                 >
-                <button class="button" type="submit">Vérifier</button>
-            </label>
+                <button id="verify-ticket" class="button" type="submit">
+                    Vérifier
+                </button>
+            </div>
+            <small>Format accepté : CH-000001-01</small>
         </form>
 
-        <p id="result" class="scan-result" role="status" aria-live="polite">
+        <p id="result" class="scan-result scan-result--checking" role="status" aria-live="polite">
             Démarrage de la caméra arrière…
         </p>
 
-        <button id="mark-used" class="button" type="button" disabled>
-            Marquer comme déjà scanné
-        </button>
+        <div class="scanner-actions">
+            <button id="mark-used" class="button" type="button" disabled>
+                Marquer comme déjà scanné
+            </button>
+            <button id="new-scan" class="button button-secondary" type="button" disabled>
+                Nouveau scan
+            </button>
+        </div>
     </section>
 @endsection
 
