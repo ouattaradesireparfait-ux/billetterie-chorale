@@ -44,6 +44,7 @@ class Order extends Model
             'wave' => 'Wave',
             'momo' => 'Momo',
             'moov_money' => 'Moov Money',
+            'cash' => 'Espèces',
             default => ucfirst(str_replace('_', ' ', $this->payment_method)),
         };
     }

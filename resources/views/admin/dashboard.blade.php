@@ -52,6 +52,7 @@
                         <option value="wave">Wave</option>
                         <option value="momo">Momo</option>
                         <option value="moov_money">Moov Money</option>
+                        <option value="cash">Espèces</option>
                     </select>
                 </label>
             </div>
@@ -95,6 +96,8 @@
                                 >Voir la capture</a>
                                 <br>
                                 <small>Reçue le {{ $order->payment_proof_uploaded_at?->format('d/m/Y à H:i') }}</small>
+                            @elseif ($order->status === 'paid')
+                                -
                             @else
                                 En attente
                             @endif

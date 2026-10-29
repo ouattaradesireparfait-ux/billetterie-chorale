@@ -6,7 +6,6 @@ use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use RuntimeException;
 
 class OrderService
 {
@@ -14,6 +13,10 @@ class OrderService
         'standard' => 'STD',
         'vip' => 'VIP',
     ];
+
+    private const TICKET_CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+    private const TICKET_CODE_LENGTH = 12;
 
     public function create(array $data, bool $paid = false): Order
     {
@@ -62,23 +65,28 @@ class OrderService
             throw new InvalidArgumentException('Type de billet inconnu : '.$ticketType);
         }
 
-        $sequence = DB::table('ticket_number_sequences')
-            ->where('ticket_type', $ticketType)
-            ->lockForUpdate()
-            ->first();
+        do {
+            $ticketNumber = $prefix.'-'.$this->randomTicketCode();
+        } while (
+            DB::table('tickets')
+                ->where('ticket_number', $ticketNumber)
+                ->exists()
+        );
 
-        if ($sequence === null) {
-            throw new RuntimeException(
-                'Compteur de numérotation introuvable pour le type '.$ticketType.'.'
-            );
+        return $ticketNumber;
+    }
+
+    private function randomTicketCode(): string
+    {
+        $alphabetLength = strlen(self::TICKET_CODE_ALPHABET);
+        $characters = '';
+
+        for ($index = 0; $index < self::TICKET_CODE_LENGTH; $index++) {
+            $characters .= self::TICKET_CODE_ALPHABET[
+                random_int(0, $alphabetLength - 1)
+            ];
         }
 
-        $number = (int) $sequence->next_number;
-
-        DB::table('ticket_number_sequences')
-            ->where('ticket_type', $ticketType)
-            ->update(['next_number' => $number + 1]);
-
-        return sprintf('%s-%04d', $prefix, $number);
+        return implode('-', str_split($characters, 4));
     }
 }

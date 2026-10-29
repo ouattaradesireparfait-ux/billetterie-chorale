@@ -23,9 +23,9 @@
                     inputmode="text"
                     autocapitalize="characters"
                     maxlength="32"
-                    pattern="(?:VIP|STD)-[0-9]{4,}"
-                    placeholder="VIP-0001 ou STD-0001"
-                    title="Format attendu : VIP-0001 ou STD-0001"
+                    pattern="(?:VIP|STD)-[A-HJ-NP-Z2-9]{4}(?:-[A-HJ-NP-Z2-9]{4}){2}"
+                    placeholder="VIP-K7Q3-M9X2-RP8C"
+                    title="Format attendu : VIP-K7Q3-M9X2-RP8C"
                     spellcheck="false"
                     required
                 >
@@ -33,7 +33,7 @@
                     Vérifier
                 </button>
             </div>
-            <small>Format accepté : VIP-0001 ou STD-0001.</small>
+            <small>Format : VIP-XXXX-XXXX-XXXX ou STD-XXXX-XXXX-XXXX.</small>
         </form>
     </section>
 

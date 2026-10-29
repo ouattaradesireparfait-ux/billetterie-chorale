@@ -257,8 +257,8 @@
         const number = ticketNumberInput.value.trim().toUpperCase();
         ticketNumberInput.value = number;
 
-        if (!/^(?:VIP|STD)-[0-9]{4,}$/.test(number)) {
-            ticketNumberInput.setCustomValidity('Saisissez un numéro au format VIP-0001 ou STD-0001.');
+        if (!/^(?:VIP|STD)-[A-HJ-NP-Z2-9]{4}(?:-[A-HJ-NP-Z2-9]{4}){2}$/.test(number)) {
+            ticketNumberInput.setCustomValidity('Saisissez un numéro au format VIP-K7Q3-M9X2-RP8C.');
             ticketNumberInput.reportValidity();
             return;
         }

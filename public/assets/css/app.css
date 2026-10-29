@@ -841,18 +841,18 @@ td form + form {
     }
 }
 
-/* Palette inspirée de l’affiche : bordeaux, ivoire et or. */
+/* Palette officielle noir et or. */
 :root {
-    --color-bordeaux: #74101b;
-    --color-bordeaux-dark: #4d0710;
-    --color-bordeaux-light: #8e1b25;
+    --color-bordeaux: #171717;
+    --color-bordeaux-dark: #050505;
+    --color-bordeaux-light: #292929;
     --color-or: #c99a2e;
-    --color-or-clair: #e8c65f;
-    --color-ivoire: #fbf4e6;
-    --color-ivoire-fonce: #f2e3bf;
-    --color-papier: #fffdf7;
-    --color-encre: #3d1b1b;
-    --color-texte-secondaire: #70594d;
+    --color-or-clair: #f0d675;
+    --color-ivoire: #101010;
+    --color-ivoire-fonce: #211c11;
+    --color-papier: #171717;
+    --color-encre: #f4eddb;
+    --color-texte-secondaire: #c6b993;
 }
 
 body {
@@ -1740,5 +1740,415 @@ main a:not(.button):hover {
 
     .scan-dialog .scanner-actions {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Thème officiel noir et or : appliqué aux pages publiques et organisateur. */
+body {
+    background: #0b0b0b;
+    color: #f4eddb;
+}
+
+body > header,
+body > footer {
+    border-color: #705a26;
+    background: linear-gradient(120deg, #050505, #171717);
+}
+
+body > header {
+    border-bottom: 1px solid #705a26;
+}
+
+body > footer {
+    color: #f0d675;
+}
+
+.site-header__brand,
+.site-header__nav a,
+.site-header__nav a:hover,
+.site-header__nav a:focus-visible {
+    color: #f0d675;
+}
+
+main {
+    color: #f4eddb;
+}
+
+main a:not(.button),
+main a:not(.button):hover {
+    color: #f0d675;
+}
+
+.hero {
+    border: 1px solid #c99a2e;
+    background: linear-gradient(135deg, #121212, #211c11);
+    color: #f4eddb;
+}
+
+.hero h1,
+.hero small,
+.card small,
+.scanner-eyebrow {
+    color: #f0d675;
+}
+
+.hero p,
+.scanner-heading p {
+    color: #d5c9a9;
+}
+
+.art {
+    border-color: #c99a2e;
+    background: #050505;
+    box-shadow: 0 0 0 7px rgb(201 154 46 / 18%);
+}
+
+.prices article,
+.card,
+.ticket,
+.admin-summary__item,
+.table,
+.scanner-manual,
+.concert-ticket,
+.ticket-face {
+    border-color: #705a26;
+    background: #171717;
+    color: #f4eddb;
+}
+
+.prices article {
+    border-radius: 12px;
+}
+
+.prices b,
+.payment-number,
+.concert-ticket__eyebrow,
+.admin-summary__item strong {
+    color: #f0d675;
+}
+
+input,
+select,
+textarea {
+    border-color: #8a7134;
+    background: #101010;
+    color: #f4eddb;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #b9ad8e;
+    opacity: 1;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+a:focus-visible {
+    outline-color: #f0d675;
+}
+
+button,
+.button {
+    border: 1px solid #c99a2e;
+    background: linear-gradient(135deg, #f0d675, #c99a2e);
+    color: #090909;
+    font-weight: 800;
+}
+
+button:hover,
+.button:hover,
+.gold:hover,
+button.gold:hover,
+.button.gold:hover {
+    border-color: #f0d675;
+    background: #f0d675;
+    color: #050505;
+}
+
+.gold,
+button.gold,
+.button.gold {
+    background: linear-gradient(135deg, #f0d675, #c99a2e);
+    color: #090909;
+}
+
+.button-secondary {
+    border: 1px solid #c99a2e;
+    background: #171717;
+    color: #f0d675;
+}
+
+.button-secondary:hover {
+    background: #292929;
+    color: #f0d675;
+}
+
+button:disabled,
+.button:disabled,
+#new-scan:disabled,
+#mark-used:disabled {
+    border-color: #514a3b;
+    background: #292929;
+    color: #aaa18e;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.payment-instructions {
+    border-left-color: #c99a2e;
+    background: #211c11;
+    color: #f4eddb;
+}
+
+.payment-instructions h3,
+.concert-ticket__title,
+.concert-ticket__details strong {
+    color: #f0d675;
+}
+
+.payment-number {
+    color: #f0d675;
+}
+
+.admin-summary__item span,
+.concert-ticket__details span,
+.concert-ticket__qr {
+    color: #c6b993;
+}
+
+.admin-summary__item {
+    border-color: #705a26;
+    background: #171717;
+}
+
+.table {
+    border-color: #705a26;
+    background: #171717;
+}
+
+table {
+    color: #f4eddb;
+}
+
+th {
+    border-bottom-color: #705a26;
+    background: #050505;
+    color: #f0d675;
+}
+
+td,
+.table td {
+    border-bottom-color: #393326;
+    color: #f4eddb;
+}
+
+.notice {
+    border: 1px solid #39714b;
+    background: #14271a;
+    color: #b9ecc5;
+}
+
+.error {
+    border: 1px solid #8b3e37;
+    background: #2c1715;
+    color: #ffd0c9;
+}
+
+.concert-ticket {
+    border-color: #c99a2e;
+    background: #171717;
+    box-shadow: 0 18px 50px rgb(0 0 0 / 40%);
+}
+
+.concert-ticket__header,
+.concert-ticket__footer {
+    border-color: #c99a2e;
+    background: #050505;
+    color: #f0d675;
+}
+
+.concert-ticket__logo,
+.concert-ticket__qr img,
+.ticket-front__qr {
+    background: #ffffff;
+}
+
+.concert-ticket__brand strong {
+    color: #f4eddb;
+}
+
+.concert-ticket__content {
+    background: #171717;
+    color: #f4eddb;
+}
+
+.concert-ticket__eyebrow,
+.concert-ticket__date,
+.concert-ticket__date span {
+    color: #f0d675;
+}
+
+.concert-ticket__venue,
+.concert-ticket__details span {
+    color: #c6b993;
+}
+
+.concert-ticket__details strong {
+    color: #f4eddb;
+}
+
+.concert-ticket__perforation {
+    border-color: #c99a2e;
+}
+
+.ticket-face {
+    border-color: #c99a2e;
+    background: #171717;
+    box-shadow: 0 16px 38px rgb(0 0 0 / 45%);
+    color: #f4eddb;
+}
+
+.ticket-face--front {
+    background:
+        radial-gradient(ellipse at 5% 5%, rgb(240 214 117 / 12%), transparent 33%),
+        linear-gradient(115deg, #171717, #211c11);
+}
+
+.ticket-front__brand,
+.ticket-front__brand strong,
+.ticket-front__event h1,
+.ticket-front__signature,
+.ticket-front__number,
+.ticket-front__qr-hint,
+.ticket-back__header h2,
+.ticket-back__event-grid strong,
+.ticket-back__holder-grid strong {
+    color: #f0d675;
+}
+
+.ticket-front__subtitle,
+.ticket-front__number-label,
+.ticket-back__event-grid span,
+.ticket-back__holder-grid span {
+    color: #c6b993;
+}
+
+.ticket-front__stub {
+    background: linear-gradient(160deg, #211c11, #171717);
+}
+
+.ticket-back__header,
+.ticket-back__footer {
+    background: linear-gradient(110deg, #050505, #171717);
+    color: #f0d675;
+}
+
+.ticket-back__event-grid > div,
+.ticket-back__holder-grid > div {
+    border-color: #705a26;
+    background: rgb(33 28 17 / 88%);
+}
+
+.ticket-back__instructions {
+    border-left-color: #c99a2e;
+    background: #211c11;
+    color: #f4eddb;
+}
+
+.scanner-manual {
+    border-color: #705a26;
+    background: #171717;
+}
+
+.scanner-manual label {
+    color: #f0d675;
+}
+
+#reader {
+    border-color: #c99a2e;
+    background: #050505;
+}
+
+#ticket-number {
+    border-color: #8a7134;
+    background: #101010;
+    color: #f4eddb;
+}
+
+.scan-dialog {
+    border-color: #c99a2e;
+    background: #171717;
+    color: #f4eddb;
+}
+
+.scan-dialog h2 {
+    color: #f0d675;
+}
+
+.scan-dialog::backdrop {
+    background: rgb(0 0 0 / 82%);
+}
+
+.scan-result--ready {
+    border-color: #705a26;
+    background: #211c11;
+    color: #f0d675;
+}
+
+.scan-result--checking {
+    border-color: #8a7134;
+    background: #2b2414;
+    color: #f6df96;
+}
+
+.scan-result--valid,
+.scan-result--marked,
+.ticket-status--valid {
+    border-color: #39714b;
+    background: #14271a;
+    color: #b9ecc5;
+}
+
+.scan-result--already-used,
+.ticket-status--used {
+    border-color: #a77e23;
+    background: #30240d;
+    color: #f5d878;
+}
+
+.scan-result--invalid,
+.scan-result--error,
+.ticket-status--blocked {
+    border-color: #8b3e37;
+    background: #2c1715;
+    color: #ffd0c9;
+}
+
+.ticket-status {
+    border-color: #705a26;
+    background: #171717;
+}
+
+#scan-result-dialog .scanner-eyebrow,
+#scan-result-dialog h2 {
+    color: #f0d675;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #514326;
+}
+
+@media print {
+    body {
+        background: #ffffff;
+        color: #000000;
+    }
+
+    body > header,
+    body > footer {
+        display: none;
     }
 }

@@ -69,7 +69,7 @@ class AdminController extends Controller
             'buyer_phone' => 'required|string|max:40',
             'ticket_type' => 'required|in:standard,vip',
             'quantity' => 'required|integer|min:1|max:10',
-            'payment_method' => 'required|in:orange_money,wave,momo,moov_money',
+            'payment_method' => 'required|in:orange_money,wave,momo,moov_money,cash',
             'payment_reference' => 'nullable|string|max:100',
         ]);
 
@@ -144,7 +144,7 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'token' => 'required_without:ticket_number|nullable|string|max:200',
-            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^(?:VIP|STD)-\d{4,}$/i'],
+            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^(?:VIP|STD)-[A-HJ-NP-Z2-9]{4}(?:-[A-HJ-NP-Z2-9]{4}){2}$/i'],
         ]);
         $token = isset($data['token'])
             ? $this->normalizeScannedToken($data['token'])
@@ -207,7 +207,7 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'token' => 'required_without:ticket_number|nullable|string|max:200',
-            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^(?:VIP|STD)-\d{4,}$/i'],
+            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^(?:VIP|STD)-[A-HJ-NP-Z2-9]{4}(?:-[A-HJ-NP-Z2-9]{4}){2}$/i'],
         ]);
         $token = isset($data['token'])
             ? $this->normalizeScannedToken($data['token'])
