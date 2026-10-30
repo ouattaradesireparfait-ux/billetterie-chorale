@@ -22,10 +22,10 @@
                     type="text"
                     inputmode="text"
                     autocapitalize="characters"
-                    maxlength="32"
-                    pattern="(?:VIP|STD)-[A-HJ-NP-Z2-9]{4}(?:-[A-HJ-NP-Z2-9]{4}){2}"
-                    placeholder="VIP-K7Q3-M9X2-RP8C"
-                    title="Format attendu : VIP-K7Q3-M9X2-RP8C"
+                    maxlength="13"
+                    pattern="(?:VIP|STD)-[A-Z0-9]{4}-(?:00[1-9]|0[1-9][0-9]|[1-9][0-9]{2})"
+                    placeholder="VIP-A0A1-001"
+                    title="Format attendu : VIP-A0A1-001 ou STD-B2C3-002"
                     spellcheck="false"
                     required
                 >
@@ -33,7 +33,7 @@
                     Vérifier
                 </button>
             </div>
-            <small>Format : VIP-XXXX-XXXX-XXXX ou STD-XXXX-XXXX-XXXX.</small>
+            <small>Format : VIP-A0A1-001 ou STD-B2C3-002.</small>
         </form>
     </section>
 

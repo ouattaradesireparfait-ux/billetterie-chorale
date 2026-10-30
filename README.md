@@ -4,6 +4,8 @@ Application Laravel autonome pour les billets du concert. Billets Standard à 2 
 
 Le paiement en ligne automatique n’est pas encore intégré : le prestataire reste à choisir.
 
+Format des billets : VIP-A0A1-001 ou STD-B2C3-002. Le bloc alphanumerique est aleatoire et la numerotation va de 001 a 999 separement pour chaque categorie.
+
 ## Installation
 
 Prérequis : PHP 8.2+, Composer, MySQL et les extensions Laravel usuelles (PDO MySQL, OpenSSL, Mbstring, Fileinfo, XML). Copier .env.example vers .env, renseigner la base, SMTP, les détails du concert, ADMIN_EMAIL et un ADMIN_PASSWORD fort. Puis lancer :

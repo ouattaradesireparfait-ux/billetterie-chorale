@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
+use RuntimeException;
 
 class OrderService
 {
@@ -14,9 +16,9 @@ class OrderService
         'vip' => 'VIP',
     ];
 
-    private const TICKET_CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    private const TICKET_CODE_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
-    private const TICKET_CODE_LENGTH = 12;
+    private const TICKET_CODE_LENGTH = 4;
 
     public function create(array $data, bool $paid = false): Order
     {
@@ -65,13 +67,41 @@ class OrderService
             throw new InvalidArgumentException('Type de billet inconnu : '.$ticketType);
         }
 
+        $sequence = DB::table('ticket_number_sequences')
+            ->where('ticket_type', $ticketType)
+            ->lockForUpdate()
+            ->first();
+
+        if ($sequence === null) {
+            throw new RuntimeException(
+                "La numerotation des billets n'est pas initialisee. Executez les migrations."
+            );
+        }
+
+        $number = (int) $sequence->next_number;
+
+        if ($number > 999) {
+            throw ValidationException::withMessages([
+                'quantity' => 'La limite de 999 billets '.$prefix.' est atteinte.',
+            ]);
+        }
+
         do {
-            $ticketNumber = $prefix.'-'.$this->randomTicketCode();
+            $ticketNumber = sprintf(
+                '%s-%s-%03d',
+                $prefix,
+                $this->randomTicketCode(),
+                $number
+            );
         } while (
             DB::table('tickets')
                 ->where('ticket_number', $ticketNumber)
                 ->exists()
         );
+
+        DB::table('ticket_number_sequences')
+            ->where('ticket_type', $ticketType)
+            ->update(['next_number' => $number + 1]);
 
         return $ticketNumber;
     }

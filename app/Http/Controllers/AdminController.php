@@ -144,7 +144,7 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'token' => 'required_without:ticket_number|nullable|string|max:200',
-            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^(?:VIP|STD)-[A-HJ-NP-Z2-9]{4}(?:-[A-HJ-NP-Z2-9]{4}){2}$/i'],
+            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^(?:VIP|STD)-[A-Z0-9]{4}-(?:00[1-9]|0[1-9][0-9]|[1-9][0-9]{2})$/i', 'max:13'],
         ]);
         $token = isset($data['token'])
             ? $this->normalizeScannedToken($data['token'])
@@ -207,7 +207,7 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'token' => 'required_without:ticket_number|nullable|string|max:200',
-            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^(?:VIP|STD)-[A-HJ-NP-Z2-9]{4}(?:-[A-HJ-NP-Z2-9]{4}){2}$/i'],
+            'ticket_number' => ['required_without:token', 'nullable', 'string', 'regex:/^(?:VIP|STD)-[A-Z0-9]{4}-(?:00[1-9]|0[1-9][0-9]|[1-9][0-9]{2})$/i', 'max:13'],
         ]);
         $token = isset($data['token'])
             ? $this->normalizeScannedToken($data['token'])
