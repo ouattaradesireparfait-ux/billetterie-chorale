@@ -22,12 +22,16 @@ class AdminController extends Controller
     public function authenticate(Request $request)
     {
         $data = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|string',
         ]);
 
-        if (! Auth::attempt($data, $request->boolean('remember'))) {
-            return back()->withErrors(['email' => 'Identifiants incorrects.']);
+        $credentials = [
+            'email' => config('admin.email'),
+            'password' => $data['password'],
+        ];
+
+        if (! $credentials['email'] || ! Auth::attempt($credentials, $request->boolean('remember'))) {
+            return back()->withErrors(['password' => 'Mot de passe incorrect.']);
         }
 
         $request->session()->regenerate();
@@ -35,7 +39,7 @@ class AdminController extends Controller
         if (! $request->user()->is_admin || ! $request->user()->is_active) {
             Auth::logout();
 
-            return back()->withErrors(['email' => 'Compte non autorisé.']);
+            return back()->withErrors(['password' => 'Mot de passe incorrect.']);
         }
 
         return redirect()->route('admin.dashboard');
@@ -117,6 +121,58 @@ class AdminController extends Controller
         $order->update(['status' => 'cancelled']);
 
         return back()->with('success', 'Commande annulée.');
+    }
+
+    public function destroyTicket(Ticket $ticket)
+    {
+        $result = DB::transaction(function () use ($ticket) {
+            $lockedTicket = Ticket::whereKey($ticket->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if ($lockedTicket->status === 'used') {
+                return [
+                    'deleted' => false,
+                    'message' => 'Un billet déjà scanné ne peut pas être supprimé.',
+                ];
+            }
+
+            $order = Order::whereKey($lockedTicket->order_id)
+                ->lockForUpdate()
+                ->firstOrFail();
+            $ticketNumber = $lockedTicket->ticket_number;
+
+            $lockedTicket->delete();
+            $remainingTickets = $order->tickets()->count();
+
+            if ($remainingTickets === 0) {
+                $order->update([
+                    'quantity' => 0,
+                    'total_amount' => 0,
+                    'status' => 'cancelled',
+                    'paid_at' => null,
+                ]);
+            } else {
+                $order->update([
+                    'quantity' => $remainingTickets,
+                    'total_amount' => $remainingTickets * (int) $order->unit_price,
+                ]);
+            }
+
+            return [
+                'deleted' => true,
+                'ticket_number' => $ticketNumber,
+            ];
+        });
+
+        if (! $result['deleted']) {
+            return back()->withErrors(['ticket' => $result['message']]);
+        }
+
+        return back()->with(
+            'success',
+            'Billet '.$result['ticket_number'].' supprimé. Le montant de la commande a été ajusté.'
+        );
     }
 
     public function paymentProof(Order $order)

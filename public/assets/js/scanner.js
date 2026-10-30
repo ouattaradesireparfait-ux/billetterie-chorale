@@ -7,7 +7,6 @@
     const manualForm = document.getElementById('manual-ticket');
     const ticketNumberInput = document.getElementById('ticket-number');
     const verifyButton = document.getElementById('verify-ticket');
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
     let scanner = null;
     let cameraStatus = 'idle';
@@ -41,7 +40,7 @@
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
             },
             body: JSON.stringify(payload),
         });

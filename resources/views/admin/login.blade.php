@@ -8,11 +8,6 @@
             @csrf
 
             <label>
-                E-mail
-                <input type="email" name="email" autocomplete="username" required>
-            </label>
-
-            <label>
                 Mot de passe
                 <input type="password" name="password" autocomplete="current-password" required>
             </label>

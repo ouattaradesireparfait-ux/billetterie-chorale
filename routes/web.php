@@ -2,7 +2,12 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/session/csrf-token', [SessionController::class, 'csrfToken'])
+    ->middleware('throttle:60,1')
+    ->name('session.csrf');
 
 Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::post('/commandes', [PublicController::class, 'order'])
@@ -39,6 +44,8 @@ Route::middleware(['auth', 'admin'])
             ->name('dashboard');
         Route::post('/ventes', [AdminController::class, 'sale'])
             ->name('sales.store');
+        Route::delete('/billets/{ticket}', [AdminController::class, 'destroyTicket'])
+            ->name('tickets.destroy');
         Route::post('/commandes/{order}/confirmer', [AdminController::class, 'paid'])
             ->name('orders.paid');
         Route::post('/commandes/{order}/annuler', [AdminController::class, 'cancel'])

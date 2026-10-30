@@ -115,9 +115,20 @@
                                 </form>
                             @elseif ($order->status === 'paid')
                                 @foreach ($order->tickets as $ticket)
-                                    <a target="_blank" rel="noopener" href="{{ route('tickets.show', $ticket->token) }}">
-                                        {{ $ticket->ticket_number }}
-                                    </a>
+                                    <div class="ticket-actions">
+                                        <a target="_blank" rel="noopener" href="{{ route('tickets.show', $ticket->token) }}">
+                                            {{ $ticket->ticket_number }}
+                                        </a>
+                                        <form
+                                            method="post"
+                                            action="{{ route('admin.tickets.destroy', $ticket) }}"
+                                            data-confirm="Supprimer le billet {{ $ticket->ticket_number }} ? Le montant de la commande sera ajuste."
+                                        >
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="button-danger" type="submit">Supprimer</button>
+                                        </form>
+                                    </div>
                                 @endforeach
                             @else
                                 —

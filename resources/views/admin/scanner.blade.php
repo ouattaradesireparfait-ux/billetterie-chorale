@@ -2,14 +2,7 @@
 
 @section('content')
     <section class="card scanner-card">
-        <div class="scanner-heading">
-            <span class="scanner-eyebrow">Contrôle des billets</span>
-            <h1>Scanner les billets</h1>
-            <p>
-                Scannez le QR code avec la caméra arrière, ou saisissez le numéro du billet.
-                La vérification ne marque pas le billet comme utilisé.
-            </p>
-        </div>
+        <h1 class="visually-hidden">Scanner les billets</h1>
 
         <div id="reader" aria-label="Lecteur de QR code utilisant la caméra arrière"></div>
 
