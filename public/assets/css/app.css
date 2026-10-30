@@ -2602,3 +2602,20 @@ main.scanner-page {
         color-scheme: dark;
     }
 }
+/* Cartes de commandes mobiles en noir et or. */
+@media (max-width: 760px) {
+    .table tr {
+        border-color: #705a26;
+        background: #171717;
+        color: #f4eddb;
+    }
+
+    .table td {
+        border-bottom-color: #393326;
+        color: #f4eddb;
+    }
+
+    .table td::before {
+        color: #f0d675;
+    }
+}
