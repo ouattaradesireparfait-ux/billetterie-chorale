@@ -98,6 +98,8 @@
             </article>
         </div>
 
+        <p class="ticket-horizontal-hint">Sur mobile, faites glisser le billet horizontalement pour voir le verso en entier.</p>
+
         <div class="ticket-status ticket-online-status {{ $ticket->status === 'used' ? 'ticket-status--used' : ($ticket->order->status !== 'paid' ? 'ticket-status--blocked' : 'ticket-status--valid') }}">
             <strong>Statut du billet</strong>
 

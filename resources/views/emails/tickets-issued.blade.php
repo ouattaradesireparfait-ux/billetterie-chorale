@@ -6,9 +6,42 @@
         <title>{{ config('ticketing.event_name') }} &mdash; vos billets</title>
         <style type="text/css">
             @@media only screen and (max-width: 520px) {
-                .email-shell { padding: 14px 8px !important; }
-                .email-back-column { display:block !important; width:100% !important; border-right:0 !important; border-bottom:1px solid #705a26 !important; }
-                .email-qr { width:120px !important; height:120px !important; }
+                .email-shell {
+                    padding: 14px 8px !important;
+                }
+
+                .email-back-scroll {
+                    width: 100% !important;
+                    overflow-x: auto !important;
+                    -webkit-overflow-scrolling: touch !important;
+                }
+
+                .email-back-table {
+                    width: 680px !important;
+                    min-width: 680px !important;
+                    table-layout: fixed !important;
+                }
+
+                .email-back-column {
+                    display: table-cell !important;
+                    border-bottom: 0 !important;
+                }
+
+                .email-back-column:nth-child(1) {
+                    width: 25% !important;
+                }
+
+                .email-back-column:nth-child(2) {
+                    width: 25% !important;
+                }
+
+                .email-back-column:nth-child(3) {
+                    width: 30% !important;
+                }
+
+                .email-back-column:nth-child(4) {
+                    width: 20% !important;
+                }
             }
         </style>
     </head>
@@ -55,42 +88,44 @@
                                         </tr>
                                         <tr>
                                             <td style="padding:8px 10px 12px; background-color:#050505;">
-                                                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                    <tr>
-                                                        <td class="email-back-column" width="25%" valign="middle" style="width:25%; padding:10px; border-right:1px solid #705a26; color:#f0d675; text-align:center;">
-                                                            <strong style="font-family:Georgia, 'Times New Roman', serif; font-size:16px;">CONCERT</strong><br>
-                                                            <span style="color:#eee6d3; font-family:Georgia, 'Times New Roman', serif; font-size:10px;">DU 10e ANNIVERSAIRE</span><br>
-                                                            <img src="{{ $message->embed(public_path('assets/images/logo-paroisse.png')) }}" width="40" height="40" alt="Paroisse Saint Albert le Grand" style="display:inline-block; width:40px; height:40px; margin:8px 3px 0; border:1px solid #c99a2e; border-radius:50%; background:#fff; object-fit:cover;">
-                                                            <img src="{{ $message->embed(public_path('assets/images/logo-chorale.png')) }}" width="40" height="40" alt="Chorale Divine M&eacute;lodie" style="display:inline-block; width:40px; height:40px; margin:8px 3px 0; border:1px solid #c99a2e; border-radius:50%; background:#fff; object-fit:cover;">
-                                                            <div style="margin-top:6px; color:#f0d675; font-size:9px;">Chorale Divine M&eacute;lodie</div>
-                                                        </td>
-                                                        <td class="email-back-column" width="25%" valign="middle" style="width:25%; padding:10px; border-right:1px solid #705a26; color:#f4eddb; font-size:11px; line-height:1.5;">
-                                                            <strong style="color:#f0d675;">DATE</strong><br>{{ $eventDate }}<br>
-                                                            <strong style="color:#f0d675;">HEURE</strong><br>{{ config('ticketing.event_time') }}<br>
-                                                            <strong style="color:#f0d675;">LIEU</strong><br>{{ config('ticketing.event_venue') }}
-                                                        </td>
-                                                        <td class="email-back-column" width="30%" valign="middle" style="width:30%; padding:10px; border-right:1px solid #705a26; color:#f4eddb; font-size:11px; line-height:1.5;">
-                                                            <strong style="color:#f0d675;">CONTACTS &amp; R&Eacute;SERVATIONS</strong><br>
-                                                            <a href="tel:+2250171275381" style="color:#f4eddb; text-decoration:none;">01 71 27 53 81</a><br>
-                                                            <a href="tel:+2250759277753" style="color:#f4eddb; text-decoration:none;">07 59 27 77 53</a>
-                                                            <div style="margin-top:8px; padding-top:6px; border-top:1px solid #705a26;">
-                                                                <strong style="color:#f0d675;">CONDITIONS D'ACC&Egrave;S</strong><br>
-                                                                Ticket obligatoire &agrave; l'entr&eacute;e. Un ticket donne droit &agrave; une seule entr&eacute;e.
-                                                            </div>
-                                                        </td>
-                                                        <td class="email-back-column" width="20%" align="center" valign="middle" style="width:20%; padding:8px; color:#f0d675; text-align:center;">
-                                                            <img
-                                                                class="email-qr"
-                                                                src="{{ $message->embedData($qrCodes[$ticket->id], 'qr-' . $ticket->ticket_number . '.png', 'image/png') }}"
-                                                                width="112"
-                                                                height="112"
-                                                                alt="QR code unique du billet {{ $ticket->ticket_number }}"
-                                                                style="display:block; width:112px; height:112px; margin:0 auto 7px; padding:4px; border:1px solid #c99a2e; background:#fff;"
-                                                            >
-                                                            <strong style="font-size:9px;">N&deg; {{ $ticket->ticket_number }}</strong>
-                                                        </td>
-                                                    </tr>
-                                                </table>
+                                                <div class="email-back-scroll" style="max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;">
+                                                    <table class="email-back-table" role="presentation" width="680" cellspacing="0" cellpadding="0" border="0" style="width:680px; min-width:680px; table-layout:fixed;">
+                                                        <tr>
+                                                            <td class="email-back-column" width="25%" valign="middle" style="width:25%; padding:10px; border-right:1px solid #705a26; color:#f0d675; text-align:center;">
+                                                                <strong style="font-family:Georgia, 'Times New Roman', serif; font-size:16px;">CONCERT</strong><br>
+                                                                <span style="color:#eee6d3; font-family:Georgia, 'Times New Roman', serif; font-size:10px;">DU 10e ANNIVERSAIRE</span><br>
+                                                                <img src="{{ $message->embed(public_path('assets/images/logo-paroisse.png')) }}" width="40" height="40" alt="Paroisse Saint Albert le Grand" style="display:inline-block; width:40px; height:40px; margin:8px 3px 0; border:1px solid #c99a2e; border-radius:50%; background:#fff; object-fit:cover;">
+                                                                <img src="{{ $message->embed(public_path('assets/images/logo-chorale.png')) }}" width="40" height="40" alt="Chorale Divine M&eacute;lodie" style="display:inline-block; width:40px; height:40px; margin:8px 3px 0; border:1px solid #c99a2e; border-radius:50%; background:#fff; object-fit:cover;">
+                                                                <div style="margin-top:6px; color:#f0d675; font-size:9px;">Chorale Divine M&eacute;lodie</div>
+                                                            </td>
+                                                            <td class="email-back-column" width="25%" valign="middle" style="width:25%; padding:10px; border-right:1px solid #705a26; color:#f4eddb; font-size:11px; line-height:1.5;">
+                                                                <strong style="color:#f0d675;">DATE</strong><br>{{ $eventDate }}<br>
+                                                                <strong style="color:#f0d675;">HEURE</strong><br>{{ config('ticketing.event_time') }}<br>
+                                                                <strong style="color:#f0d675;">LIEU</strong><br>{{ config('ticketing.event_venue') }}
+                                                            </td>
+                                                            <td class="email-back-column" width="30%" valign="middle" style="width:30%; padding:10px; border-right:1px solid #705a26; color:#f4eddb; font-size:11px; line-height:1.5;">
+                                                                <strong style="color:#f0d675;">CONTACTS &amp; R&Eacute;SERVATIONS</strong><br>
+                                                                <a href="tel:+2250171275381" style="color:#f4eddb; text-decoration:none;">01 71 27 53 81</a><br>
+                                                                <a href="tel:+2250759277753" style="color:#f4eddb; text-decoration:none;">07 59 27 77 53</a>
+                                                                <div style="margin-top:8px; padding-top:6px; border-top:1px solid #705a26;">
+                                                                    <strong style="color:#f0d675;">CONDITIONS D'ACC&Egrave;S</strong><br>
+                                                                    Ticket obligatoire &agrave; l'entr&eacute;e. Un ticket donne droit &agrave; une seule entr&eacute;e.
+                                                                </div>
+                                                            </td>
+                                                            <td class="email-back-column" width="20%" align="center" valign="middle" style="width:20%; padding:8px; color:#f0d675; text-align:center;">
+                                                                <img
+                                                                    class="email-qr"
+                                                                    src="{{ $message->embedData($qrCodes[$ticket->id], 'qr-' . $ticket->ticket_number . '.png', 'image/png') }}"
+                                                                    width="112"
+                                                                    height="112"
+                                                                    alt="QR code unique du billet {{ $ticket->ticket_number }}"
+                                                                    style="display:block; width:112px; height:112px; margin:0 auto 7px; padding:4px; border:1px solid #c99a2e; background:#fff;"
+                                                                >
+                                                                <strong style="font-size:9px;">N&deg; {{ $ticket->ticket_number }}</strong>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr>

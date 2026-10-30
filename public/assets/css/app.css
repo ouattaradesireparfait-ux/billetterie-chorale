@@ -2444,84 +2444,65 @@ main.scanner-page {
     text-align: center;
 }
 
+.ticket-horizontal-hint {
+    display: none;
+}
+
 .ticket-online-status {
     margin: 18px 0;
 }
 
 @media (max-width: 680px) {
+    .ticket-document {
+        width: 100%;
+        min-width: 0;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        padding-bottom: 6px;
+    }
+
+    .ticket-face--front,
+    .ticket-face--back {
+        width: 680px;
+        max-width: none;
+    }
+
     .ticket-face--front {
         aspect-ratio: 16 / 5;
     }
 
     .ticket-face--back {
         min-height: 0;
-        aspect-ratio: auto;
+        aspect-ratio: 16 / 5;
         padding: 8px;
     }
 
     .ticket-back__layout {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: 1.08fr 0.92fr 1.08fr 0.62fr;
     }
 
     .ticket-back__identity,
     .ticket-back__event,
     .ticket-back__contacts {
-        padding: 14px 10px;
-        border-right: 0;
-        border-bottom: 1px solid #705a26;
+        padding: 8px;
+        border-right: 1px solid #705a26;
+        border-bottom: 0;
     }
 
-    .ticket-back__identity h2 {
-        font-size: 22px;
-    }
-
-    .ticket-back__identity h2 strong {
-        font-size: 13px;
-    }
-
-    .ticket-back__choir {
-        font-size: 19px;
-    }
-
-    .ticket-back__organizer {
-        font-size: 11px;
-    }
-
-    .ticket-back__event-item span,
-    .ticket-back__conditions strong,
-    .ticket-back__contacts h3 {
-        font-size: 12px;
-    }
-
-    .ticket-back__event-item strong,
-    .ticket-back__conditions span,
-    .ticket-back__contacts > a {
-        font-size: 13px;
-    }
-
-    .ticket-back__code {
-        display: grid;
-        grid-template-columns: 120px minmax(0, 1fr);
-        justify-items: center;
-        padding: 12px 10px;
-    }
-
-    .ticket-back__qr {
-        width: 112px;
-        grid-row: span 2;
-    }
-
-    .ticket-back__number strong {
-        font-size: 12px;
-    }
-
-    .ticket-back__slogan {
-        padding: 10px 4px 4px;
-        font-size: 18px;
+    .ticket-horizontal-hint {
+        display: block;
+        margin: 6px 0 14px;
+        color: #c9b77f;
+        font-size: 0.82rem;
+        text-align: center;
     }
 }
 
 @media print {
+    .ticket-horizontal-hint {
+        display: none !important;
+    }
+
     .ticket-page {
         width: 100%;
         max-width: none;
