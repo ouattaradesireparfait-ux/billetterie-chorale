@@ -2573,3 +2573,32 @@ main.scanner-page {
         display: none !important;
     }
 }
+
+/* Formulaire de commande mobile en noir et or. */
+@media (max-width: 760px) {
+    #tickets .card {
+        border-color: #c99a2e;
+        background: #111111;
+        color: #f4eddb;
+    }
+
+    #tickets .card h2 {
+        color: #f0d675;
+    }
+
+    #tickets .card p {
+        color: #d5c9a9;
+    }
+
+    #tickets .card label {
+        color: #f4eddb;
+    }
+
+    #tickets .card input,
+    #tickets .card select {
+        border-color: #8a7134;
+        background: #101010;
+        color: #f4eddb;
+        color-scheme: dark;
+    }
+}
