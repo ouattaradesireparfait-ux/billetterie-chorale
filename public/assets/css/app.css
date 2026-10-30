@@ -2612,6 +2612,7 @@ main.scanner-page {
 
     .table td {
         border-bottom-color: #393326;
+        background-color: #050505;
         color: #f4eddb;
     }
 
